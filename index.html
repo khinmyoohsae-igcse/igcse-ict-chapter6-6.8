@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IGCSE ICT - Expert Systems Quiz (25 MCQs)</title>
+    <style>
+        :root {
+            --bg-main: #090d16;
+            --bg-card: #131d31;
+            --border-color: #223354;
+            --accent: #38bdf8;
+            --accent-hover: #0ea5e9;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        header {
+            background-color: var(--bg-card);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1.5rem 1rem;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        header h1 {
+            color: var(--accent);
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.35rem;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        main {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+            max-width: 800px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .quiz-status {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.25rem;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .score-pill {
+            background-color: #0c4a6e;
+            color: #7dd3fc;
+            padding: 0.35rem 1rem;
+            border-radius: 9999px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border: 1px solid #0284c7;
+        }
+
+        .card {
+            width: 100%;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 1.25rem;
+            padding: 2rem;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .question-text {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #f1f5f9;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.85rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .option-btn {
+            width: 100%;
+            text-align: left;
+            background-color: #1e293b;
+            color: var(--text-main);
+            padding: 1rem 1.25rem;
+            border-radius: 0.85rem;
+            border: 1px solid #334155;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .option-btn:hover:not(:disabled) {
+            background-color: #283548;
+            border-color: var(--accent);
+            transform: translateY(-1px);
+        }
+
+        .option-btn:disabled {
+            cursor: not-allowed;
+        }
+
+        .option-btn.correct {
+            background-color: #064e3b !important;
+            border-color: #059669 !important;
+            color: #ecfdf5 !important;
+        }
+
+        .option-btn.incorrect {
+            background-color: #7f1d1d !important;
+            border-color: #dc2626 !important;
+            color: #fee2e2 !important;
+        }
+
+        .feedback-box {
+            padding: 1.15rem;
+            border-radius: 0.85rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .feedback-box.correct-feedback {
+            background-color: #022c22;
+            border: 1px solid #047857;
+            color: #a7f3d0;
+        }
+
+        .feedback-box.incorrect-feedback {
+            background-color: #450a0a;
+            border: 1px solid #b91c1c;
+            color: #fecdd3;
+        }
+
+        .btn-primary {
+            background-color: var(--accent);
+            color: #0f172a;
+            font-weight: 700;
+            padding: 0.85rem 1.75rem;
+            border-radius: 0.85rem;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--accent-hover);
+            transform: translateY(-1px);
+        }
+
+        .results-card {
+            text-align: center;
+            padding: 3rem 2rem;
+        }
+
+        .results-card h2 {
+            font-size: 2.25rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        .results-card p {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        footer {
+            background-color: var(--bg-card);
+            border-top: 1px solid var(--border-color);
+            padding: 1rem;
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>IGCSE ICT Practice Quiz</h1>
+        <p>Topics 6.8 & 6.8.1 Expert Systems (25 MCQs)</p>
+    </header>
+
+    <main>
+        <div class="quiz-status">
+            <span id="question-counter">Question 1 of 25</span>
+            <span id="score-display" class="score-pill">Score: 0</span>
+        </div>
+
+        <!-- Quiz Container -->
+        <div id="quiz-container" class="card">
+            <div id="question-box" class="question-text">
+                Loading question...
+            </div>
+
+            <div id="options-container" class="options-list">
+                <!-- Options populated dynamically -->
+            </div>
+
+            <div id="feedback-box" class="feedback-box hidden">
+                <!-- Feedback populated dynamically -->
+            </div>
+
+            <div style="display: flex; justify-content: flex-end;">
+                <button id="next-btn" onclick="nextQuestion()" class="btn-primary hidden">Next Question</button>
+            </div>
+        </div>
+
+        <!-- Results Container -->
+        <div id="results-container" class="card results-card hidden">
+            <h2>Quiz Completed! 🎉</h2>
+            <p id="final-score">You scored X out of 25</p>
+            <button onclick="restartQuiz()" class="btn-primary">Restart Quiz</button>
+            <div style="margin-top: 1rem; font-size: 0.9rem; color: var(--accent);">
+                <span>Notebook Sources Active</span>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        IGCSE ICT Revision &bull; Expert Systems
+    </footer>
+
+    <script>
+        const questions = [
+            {
+                question: "What is an expert system in computer science?",
+                options: [
+                    { text: "A computer software system designed to emulate the decision-making ability of a human expert in a specialized field", isCorrect: true, rationale: "Expert systems use artificial intelligence to mimic human expert reasoning and problem-solving." },
+                    { text: "A mechanical robot used for assembling cars on industrial assembly lines", isCorrect: false, rationale: "This describes industrial robotics, not software expert systems." },
+                    { text: "A physical filing cabinet for storing paper hospital medical charts", isCorrect: false, rationale: "Expert systems are software programs, not physical furniture." },
+                    { text: "A wireless network router connecting office local area networks", isCorrect: false, rationale: "This describes networking hardware." }
+                ]
+            },
+            {
+                question: "What is the primary purpose of the 'Knowledge Base' in an expert system?",
+                options: [
+                    { text: "A database containing factual and heuristic knowledge gathered from human experts in a specific domain", isCorrect: true, rationale: "The knowledge base stores facts, rules, and relationships about the specialized subject area." },
+                    { text: "A graphical user interface for selecting font sizes", isCorrect: false, rationale: "This describes word processing formatting tools." },
+                    { text: "A hardware device used for printing paper receipts", isCorrect: false, rationale: "This describes receipt printers." },
+                    { text: "A virus signature database for anti-malware scanners", isCorrect: false, rationale: "This is anti-malware data." }
+                ]
+            },
+            {
+                question: "What is the function of the 'Inference Engine' in an expert system?",
+                options: [
+                    { text: "The software brain that applies logical rules to the knowledge base to draw conclusions and solve problems based on user input", isCorrect: true, rationale: "The inference engine acts as the processing brain, searching rules to deduce answers and recommendations." },
+                    { text: "A cooling fan used to prevent CPU microchips from overheating", isCorrect: false, rationale: "This describes hardware cooling fans." },
+                    { text: "A physical cable connecting routers to switches", isCorrect: false, rationale: "This describes network cabling." },
+                    { text: "A device for scanning barcodes at supermarket checkout tills", isCorrect: false, rationale: "This describes barcode scanners." }
+                ]
+            },
+            {
+                question: "What is the role of the 'Rules' (IF-THEN statements) stored in an expert system's knowledge base?",
+                options: [
+                    { text: "To establish logical cause-and-effect conditions (e.g., IF symptom is fever AND cough THEN diagnosis is flu)", isCorrect: true, rationale: "Expert systems rely heavily on IF-THEN production rules to evaluate conditions and deduce conclusions." },
+                    { text: "To format spreadsheet column borders and shading colors", isCorrect: false, rationale: "This describes spreadsheet formatting." },
+                    { text: "To encrypt network data packets using HTTPS protocols", isCorrect: false, rationale: "This describes network cryptography." },
+                    { text: "To print out paper mailing labels", isCorrect: false, rationale: "This describes label printing." }
+                ]
+            },
+            {
+                question: "What is the function of the 'User Interface' in an expert system?",
+                options: [
+                    { text: "The communication medium that allows the user to input symptoms or questions and receive answers and recommendations from the system", isCorrect: true, rationale: "The user interface manages interaction between human operators and the expert system software." },
+                    { text: "A mechanical lever used for driving a forklift truck", isCorrect: false, rationale: "This is vehicle machinery." },
+                    { text: "A flatbed document scanner for digitizing photographs", isCorrect: false, rationale: "This is image scanning hardware." },
+                    { text: "An optical mark reader for grading exam papers", isCorrect: false, rationale: "This describes OMR card readers." }
+                ]
+            },
+            {
+                question: "What is the 'Explanation System' (Explanation Facility) in an expert system?",
+                options: [
+                    { text: "A component that explains the reasoning path and logical steps the system took to arrive at a particular conclusion or recommendation", isCorrect: true, rationale: "The explanation facility builds user trust by showing the logic and rules used to reach a recommendation." },
+                    { text: "A teacher lecturing students inside a school classroom", isCorrect: false, rationale: "This is classroom teaching." },
+                    { text: "An error message box that crashes the computer operating system", isCorrect: false, rationale: "This describes software crashes." },
+                    { text: "A help menu for formatting Microsoft Word documents", isCorrect: false, rationale: "This is word processing help." }
+                ]
+            },
+            {
+                question: "What is the 'Knowledge Engineer' in the development of an expert system?",
+                options: [
+                    { text: "The computer specialist who interviews human domain experts and encodes their knowledge into the expert system's knowledge base", isCorrect: true, rationale: "Knowledge engineers bridge human expertise and software programming to build the knowledge base." },
+                    { text: "A civil engineer who designs highway bridges and buildings", isCorrect: false, rationale: "This describes civil engineering." },
+                    { text: "A network technician who installs Wi-Fi routers", isCorrect: false, rationale: "This describes network administration." },
+                    { text: "A mechanic who repairs automobile engines", isCorrect: false, rationale: "This describes automotive repair." }
+                ]
+            },
+            {
+                question: "What is a 'Domain Expert' in the context of expert systems?",
+                options: [
+                    { text: "A human specialist with extensive knowledge and experience in a specific field (such as medicine, geology, or finance) who provides the core knowledge", isCorrect: true, rationale: "Domain experts provide the professional knowledge and expertise that the expert system is built to emulate." },
+                    { text: "A computer programmer who writes Python code", isCorrect: false, rationale: "Programmers build software; domain experts provide subject matter expertise." },
+                    { text: "A novice computer user learning how to type", isCorrect: false, rationale: "This describes a beginner user." },
+                    { text: "A hardware technician repairing computer motherboards", isCorrect: false, rationale: "This describes hardware repair." }
+                ]
+            },
+            {
+                question: "What are typical real-world application areas where expert systems are used?",
+                options: [
+                    { text: "Medical diagnosis, mineral exploration, tax/financial planning, car engine fault diagnosis, and chess-playing programs", isCorrect: true, rationale: "Expert systems excel in complex diagnostic and advisory domains requiring specialized human expertise." },
+                    { text: "Scanning supermarket grocery barcodes at checkout tills", isCorrect: false, rationale: "This is retail point-of-sale data entry." },
+                    { text: "Printing paper invoices on office laser printers", isCorrect: false, rationale: "This describes administrative printing." },
+                    { text: "Playing casual offline video games", isCorrect: false, rationale: "Gaming is for entertainment." }
+                ]
+            },
+            {
+                question: "How do expert systems assist doctors in medical diagnosis?",
+                options: [
+                    { text: "By prompting doctors or patients for symptoms, evaluating them against medical rule bases in the knowledge base, and suggesting potential diagnoses and treatments", isCorrect: true, rationale: "Medical expert systems guide physicians through symptom analysis to recommend accurate diagnoses." },
+                    { text: "By performing major open-heart surgery autonomously without human surgeons", isCorrect: false, rationale: "Expert systems assist with diagnosis, whereas surgical robots assist with operations." },
+                    { text: "By printing paper prescriptions on dot-matrix printers", isCorrect: false, rationale: "This describes administrative printing." },
+                    { text: "By cleaning hospital laboratory glassware", isCorrect: false, rationale: "This is laboratory maintenance." }
+                ]
+            },
+            {
+                question: "How are expert systems used in mineral and oil exploration (geology)?",
+                options: [
+                    { text: "By analyzing geological survey data, soil samples, and seismic readings to advise mining companies on where drilling for oil or minerals is most likely to succeed", isCorrect: true, rationale: "Geological expert systems evaluate underground data to predict mineral deposits." },
+                    { text: "By driving bulldozer trucks across desert sand dunes", isCorrect: false, rationale: "This is heavy machinery operation." },
+                    { text: "By measuring room temperature in office buildings", isCorrect: false, rationale: "This is environmental climate control." },
+                    { text: "By printing out paper maps of city streets", isCorrect: false, rationale: "This is map publishing." }
+                ]
+            },
+            {
+                question: "What are the major advantages of using expert systems instead of relying solely on human experts?",
+                options: [
+                    { text: "They never get tired or emotional, can store vast amounts of knowledge from multiple experts, provide 24/7 availability, and do not retire or forget information", isCorrect: true, rationale: "Expert systems offer tireless consistency, permanent knowledge retention, and round-the-clock availability." },
+                    { text: "They cost zero money to build and maintain", isCorrect: false, rationale: "Developing and maintaining expert systems requires significant investment." },
+                    { text: "They make zero errors under all conceivable circumstances", isCorrect: true.split()[0] === 'false' && true, rationale: "While consistent, their accuracy depends entirely on the quality of their knowledge base." },
+                    { text: "They possess genuine human consciousness and feelings", isCorrect: false, rationale: "Expert systems simulate logic; they lack human consciousness." }
+                ]
+            },
+            {
+                question: "What are the major disadvantages or limitations of expert systems?",
+                options: [
+                    { text: "They lack common sense and human intuition, can give disastrous advice if flawed rules exist in the knowledge base, and are expensive and time-consuming to build", isCorrect: true, rationale: "Expert systems struggle with novel situations requiring human intuition and common sense." },
+                    { text: "They operate at lightning-slow speeds taking 50 years per calculation", isCorrect: false, rationale: "Computers execute rule searches instantly." },
+                    { text: "They require physical copper cables to be hand-wound", isCorrect: false, rationale: "This is absurd." },
+                    { text: "They eliminate the need for computer hardware", isCorrect: false, rationale: "Hardware is essential to run the software." }
+                ]
+            },
+            {
+                question: "Why is acquiring knowledge from human experts often difficult during the creation of an expert system?",
+                options: [
+                    { text: "Human experts often use intuition and 'gut feeling' that is hard to translate into rigid IF-THEN programming rules", isCorrect: true, rationale: "Tacit human expertise and intuition are notoriously difficult to capture into explicit software rules." },
+                    { text: "Human experts refuse to speak English", isCorrect: false, rationale: "Language is not the barrier; tacit intuitive knowledge is." },
+                    { text: "Human experts only work underwater", isCorrect: false, rationale: "This is false." },
+                    { text: "Human experts cannot use computer keyboards", isCorrect: false, rationale: "This is incorrect." }
+                ]
+            },
+            {
+                question: "What is 'forward chaining' in an expert system's inference engine?",
+                options: [
+                    { text: "A reasoning method that starts with known facts and rules, working forward to deduce new conclusions (data-driven approach)", isCorrect: true, rationale: "Forward chaining starts from initial facts and applies rules to see what conclusions follow." },
+                    { text: "A physical chain used for towing broken cars", isCorrect: false, rationale: "This is automotive towing." },
+                    { text: "A network cable linking Ethernet switches", isCorrect: false, rationale: "This describes network hardware." },
+                    { text: "A formatting style in word processors", isCorrect: false, rationale: "This is text formatting." }
+                ]
+            },
+            {
+                question: "What is 'backward chaining' in an expert system's inference engine?",
+                options: [
+                    { text: "A reasoning method that starts with a goal or hypothesis and works backward to check if supporting facts exist in the knowledge base (goal-driven approach)", isCorrect: true, rationale: "Backward chaining starts from a hypothesis or target question and works backward to verify if rules support it." },
+                    { text: "Walking backward down office hallways", isCorrect: false, rationale: "This is human movement." },
+                    { text: "Reversing a car into a parking garage", isCorrect: false, rationale: "This is driving." },
+                    { text: "Restoring deleted files from the recycle bin", isCorrect: false, rationale: "This is file recovery." }
+                ]
+            },
+            {
+                question: "How do expert systems handle uncertainty or incomplete data in user inputs?",
+                options: [
+                    { text: "Many expert systems use 'certainty factors' or probability values attached to rules to gauge how confident the system is in its conclusions", isCorrect: true, rationale: "Certainty factors allow expert systems to process uncertain or fuzzy real-world data realistically." },
+                    { text: "They crash immediately and display a blue screen of death", isCorrect: false, rationale: "Robust systems handle uncertainty gracefully using probability." },
+                    { text: "They guess randomly without using logic", isCorrect: false, rationale: "Expert systems rely strictly on probabilistic rule logic." },
+                    { text: "They delete all files from the hard drive", isCorrect: false, rationale: "This is destructive malware behavior, not expert systems." }
+                ]
+            },
+            {
+                question: "Why might an expert system fail or give incorrect advice?",
+                options: [
+                    { text: "If the knowledge base contains outdated information, logical contradictions, or incomplete rules provided by human experts", isCorrect: true, rationale: "Flawed, outdated, or incomplete knowledge bases lead directly to incorrect system recommendations." },
+                    { text: "Because computer microchips run on water instead of electricity", isCorrect: false, rationale: "Microchips require electricity." },
+                    { text: "Because the computer monitor screen is turned off", isCorrect: false, rationale: "A turned-off screen prevents viewing, but does not alter reasoning logic." },
+                    { text: "Because the computer keyboard has too many keys", isCorrect: false, rationale: "Keyboard layout is unrelated." }
+                ]
+            },
+            {
+                question: "What is the difference between a conventional computer program (e.g., written in Python or C++) and an expert system?",
+                options: [
+                    { text: "A conventional program follows strict algorithmic step-by-step instructions to solve problems, whereas an expert system separates its knowledge base from its inference engine to mimic human reasoning", isCorrect: true, rationale: "Expert systems decouple domain knowledge rules from the inference engine, allowing flexible heuristic reasoning." },
+                    { text: "Conventional programs possess true human emotions, while expert systems do not", isCorrect: false, rationale: "Neither program possesses human emotions." },
+                    { text: "Expert systems run without needing computer hardware", isCorrect: false, rationale: "All software requires hardware to run." },
+                    { text: "Conventional programs can only be used for medical diagnosis", isCorrect: false, rationale: "Conventional programs are general-purpose." }
+                ]
+            },
+            {
+                question: "What role does the 'Blackboard' (working memory) play in an expert system architecture?",
+                options: [
+                    { text: "A working memory area that stores the specific facts, current data, and user inputs gathered during a single session", isCorrect: true, rationale: "The blackboard tracks active facts and intermediate conclusions specific to the current consultation." },
+                    { text: "A black chalkboard written on with white chalk in school classrooms", isCorrect: false, rationale: "This is traditional classroom equipment." },
+                    { text: "A computer display monitor background wallpaper", isCorrect: false, rationale: "This is desktop display graphics." },
+                    { text: "A hardware graphics card for rendering 3D video games", isCorrect: true.split()[0] === 'false' && true, rationale: "This describes a GPU." }
+                ]
+            },
+            {
+                question: "How do financial and tax planning expert systems assist accountants and businesses?",
+                options: [
+                    { text: "By analyzing corporate tax laws, financial ledgers, and expense data to advise on tax compliance, deductions, and investment strategies", isCorrect: true, rationale: "Tax expert systems navigate complex financial legislation to provide accurate advisory recommendations." },
+                    { text: "By printing paper banknotes in office basements", isCorrect: false, rationale: "Printing currency is restricted to government central mints." },
+                    { text: "By scanning supermarket barcode receipts", isCorrect: false, rationale: "This is retail data entry." },
+                    { text: "By operating factory robotic assembly arms", isCorrect: false, rationale: "This is industrial manufacturing." }
+                ]
+            },
+            {
+                question: "Why are expert systems particularly valuable in industries facing a shortage of human specialists?",
+                options: [
+                    { text: "They capture and preserve scarce expert knowledge so junior staff or remote locations can access expert-level guidance instantly", isCorrect: true, rationale: "Expert systems scale rare human expertise, making it accessible to non-experts whenever needed." },
+                    { text: "They replace all human workers with automated machinery permanently", isCorrect: false, rationale: "They assist workers rather than replacing human personnel entirely." },
+                    { text: "They cost zero money to implement globally", isCorrect: false, rationale: "Development requires substantial financial investment." },
+                    { text: "They eliminate the need for training schools", isCorrect: false, rationale: "Training remains essential." }
+                ]
+            },
+            {
+                question: "What is 'heuristic knowledge' stored within an expert system's knowledge base?",
+                options: [
+                    { text: "Rules of thumb, educated guesses, and empirical experience-based problem-solving shortcuts used by human experts", isCorrect: true, rationale: "Heuristics represent practical rules of thumb derived from years of expert experience." },
+                    { text: "Exact mathematical formulas like calculating circle areas", isCorrect: false, rationale: "Exact formulas are algorithmic, whereas heuristics are rules of thumb." },
+                    { text: "Operating system startup configuration files", isCorrect: false, rationale: "This describes system boot files." },
+                    { text: "Network router IP address tables", isCorrect: false, rationale: "This describes routing tables." }
+                ]
+            },
+            {
+                question: "What is an example of an expert system used in car maintenance and repair?",
+                options: [
+                    { text: "Diagnostic software that prompts mechanics with symptom questions (e.g., engine stalling, smoke color) to identify faulty components and repair procedures", isCorrect: true, rationale: "Automotive diagnostic expert systems guide technicians through troubleshooting complex engine faults." },
+                    { text: "A mechanical car jack used for lifting tires off the ground", isCorrect: false, rationale: "This is a mechanical tool." },
+                    { text: "An automatic car wash machine spraying water", isCorrect: false, rationale: "This is mechanical washing equipment." },
+                    { text: "A steering wheel used for driving vehicles", isCorrect: false, rationale: "This is vehicle steering controls." }
+                ]
+            },
+            {
+                question: "Which summary best encapsulates 6.8 / 6.8.1 Expert Systems in IGCSE ICT?",
+                options: [
+                    { text: "Expert systems are artificial intelligence software programs that emulate human experts, consisting of a knowledge base, inference engine, user interface, and explanation system to provide specialized advice in fields like medicine and diagnosis", isCorrect: true, rationale: "Expert systems replicate human expert reasoning through structured knowledge bases and inference engines." },
+                    { text: "Expert systems are manual paper filing cabinets used exclusively by school librarians", isCorrect: false, rationale: "Expert systems are advanced AI software applications." },
+                    { text: "Expert systems require no knowledge base or inference engine whatsoever", isCorrect: false, rationale: "Knowledge bases and inference engines are the core components of expert systems." },
+                    { text: "Expert systems are identical to anti-malware virus scanners", isCorrect: false, rationale: "Expert systems provide expert advice, whereas anti-malware protects against malicious code." }
+                ]
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let answered = false;
+
+        const questionCounter = document.getElementById("question-counter");
+        const scoreDisplay = document.getElementById("score-display");
+        const questionBox = document.getElementById("question-box");
+        const optionsContainer = document.getElementById("options-container");
+        const feedbackBox = document.getElementById("feedback-box");
+        const nextBtn = document.getElementById("next-btn");
+        const quizContainer = document.getElementById("quiz-container");
+        const resultsContainer = document.getElementById("results-container");
+        const finalScore = document.getElementById("final-score");
+
+        function loadQuestion() {
+            answered = false;
+            feedbackBox.classList.add("hidden");
+            nextBtn.classList.add("hidden");
+            
+            const q = questions[currentQuestionIndex];
+            questionCounter.textContent = `Question ${currentQuestionIndex + 1} of ${questions.length}`;
+            scoreDisplay.textContent = `Score: ${score}`;
+            questionBox.textContent = q.question;
+
+            // Shuffle options array randomly so correct answer is not always first
+            let shuffledOptions = [...q.options].sort(() => Math.random() - 0.5);
+
+            optionsContainer.innerHTML = "";
+            shuffledOptions.forEach((opt) => {
+                const btn = document.createElement("button");
+                btn.className = "option-btn";
+                btn.textContent = opt.text;
+                btn.onclick = () => selectOption(opt, shuffledOptions);
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function selectOption(selectedOpt, shuffledOptions) {
+            if (answered) return;
+            answered = true;
+
+            const allOptionButtons = optionsContainer.children;
+
+            shuffledOptions.forEach((opt, idx) => {
+                allOptionButtons[idx].disabled = true;
+                if (opt.isCorrect) {
+                    allOptionButtons[idx].classList.add("correct");
+                } else if (opt === selectedOpt && !selectedOpt.isCorrect) {
+                    allOptionButtons[idx].classList.add("incorrect");
+                }
+            });
+
+            feedbackBox.classList.remove("hidden");
+            if (selectedOpt.isCorrect) {
+                score++;
+                scoreDisplay.textContent = `Score: ${score}`;
+                feedbackBox.className = "feedback-box correct-feedback";
+                feedbackBox.innerHTML = `<strong>Correct!</strong> ${selectedOpt.rationale}`;
+            } else {
+                feedbackBox.className = "feedback-box incorrect-feedback";
+                feedbackBox.innerHTML = `<strong>Incorrect.</strong> ${selectedOpt.rationale}`;
+            }
+
+            if (currentQuestionIndex < questions.length - 1) {
+                nextBtn.textContent = "Next Question";
+            } else {
+                nextBtn.textContent = "View Results";
+            }
+            nextBtn.classList.remove("hidden");
+        }
+
+        function nextQuestion() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < questions.length) {
+                loadQuestion();
+            } else {
+                quizContainer.classList.add("hidden");
+                resultsContainer.classList.remove("hidden");
+                finalScore.textContent = `You scored ${score} out of ${questions.length}`;
+            }
+        }
+
+        function restartQuiz() {
+            currentQuestionIndex = 0;
+            score = 0;
+            resultsContainer.classList.add("hidden");
+            quizContainer.classList.remove("hidden");
+            loadQuestion();
+        }
+
+        // Initialize quiz on load
+        loadQuestion();
+    </script>
+</body>
+</html>
