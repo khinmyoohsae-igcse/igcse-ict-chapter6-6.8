@@ -365,7 +365,7 @@
                 options: [
                     { text: "They never get tired or emotional, can store vast amounts of knowledge from multiple experts, provide 24/7 availability, and do not retire or forget information", isCorrect: true, rationale: "Expert systems offer tireless consistency, permanent knowledge retention, and round-the-clock availability." },
                     { text: "They cost zero money to build and maintain", isCorrect: false, rationale: "Developing and maintaining expert systems requires significant investment." },
-                    { text: "They make zero errors under all conceivable circumstances", isCorrect: true.split()[0] === 'false' && true, rationale: "While consistent, their accuracy depends entirely on the quality of their knowledge base." },
+                    { text: "They make zero errors under all conceivable circumstances", isCorrect: false, rationale: "While consistent, their accuracy depends entirely on the quality of their knowledge base." },
                     { text: "They possess genuine human consciousness and feelings", isCorrect: false, rationale: "Expert systems simulate logic; they lack human consciousness." }
                 ]
             },
@@ -382,7 +382,7 @@
                 question: "Why is acquiring knowledge from human experts often difficult during the creation of an expert system?",
                 options: [
                     { text: "Human experts often use intuition and 'gut feeling' that is hard to translate into rigid IF-THEN programming rules", isCorrect: true, rationale: "Tacit human expertise and intuition are notoriously difficult to capture into explicit software rules." },
-                    { text: "Human experts refuse to speak English", isCorrect: false, rationale: "Language is not the barrier; tacit intuitive knowledge is." },
+                    { text: "Human experts often refuse to speak English", isCorrect: false, rationale: "Language is not the barrier; tacit intuitive knowledge is." },
                     { text: "Human experts only work underwater", isCorrect: false, rationale: "This is false." },
                     { text: "Human experts cannot use computer keyboards", isCorrect: false, rationale: "This is incorrect." }
                 ]
@@ -438,7 +438,7 @@
                     { text: "A working memory area that stores the specific facts, current data, and user inputs gathered during a single session", isCorrect: true, rationale: "The blackboard tracks active facts and intermediate conclusions specific to the current consultation." },
                     { text: "A black chalkboard written on with white chalk in school classrooms", isCorrect: false, rationale: "This is traditional classroom equipment." },
                     { text: "A computer display monitor background wallpaper", isCorrect: false, rationale: "This is desktop display graphics." },
-                    { text: "A hardware graphics card for rendering 3D video games", isCorrect: true.split()[0] === 'false' && true, rationale: "This describes a GPU." }
+                    { text: "A hardware graphics card for rendering 3D video games", isCorrect: false, rationale: "This describes a GPU." }
                 ]
             },
             {
@@ -502,6 +502,19 @@
         const resultsContainer = document.getElementById("results-container");
         const finalScore = document.getElementById("final-score");
 
+        function shuffleArray(array) {
+            let currentIndex = array.length, randomIndex;
+            while (currentIndex !== 0) {
+                randomIndex = Math.floor(Math.random() * currentIndex);
+                currentIndex--;
+                [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+            }
+            return array;
+        }
+
+        // Shuffle questions order on load
+        shuffleArray(questions);
+
         function loadQuestion() {
             answered = false;
             feedbackBox.classList.add("hidden");
@@ -513,7 +526,8 @@
             questionBox.textContent = q.question;
 
             // Shuffle options array randomly so correct answer is not always first
-            let shuffledOptions = [...q.options].sort(() => Math.random() - 0.5);
+            let shuffledOptions = [...q.options];
+            shuffleArray(shuffledOptions);
 
             optionsContainer.innerHTML = "";
             shuffledOptions.forEach((opt) => {
@@ -545,10 +559,11 @@
                 score++;
                 scoreDisplay.textContent = `Score: ${score}`;
                 feedbackBox.className = "feedback-box correct-feedback";
-                feedbackBox.innerHTML = `<strong>Correct!</strong> ${selectedOpt.rationale}`;
+                feedbackBox.innerHTML = `<strong>Correct! 🎉</strong> ${selectedOpt.rationale}`;
             } else {
                 feedbackBox.className = "feedback-box incorrect-feedback";
-                feedbackBox.innerHTML = `<strong>Incorrect.</strong> ${selectedOpt.rationale}`;
+                const correctOpt = questions[currentQuestionIndex].options.find(o => o.isCorrect);
+                feedbackBox.innerHTML = `<strong>Incorrect.</strong> ${selectedOpt.rationale}<br><br><em>Correct answer:</em> ${correctOpt.text}`;
             }
 
             if (currentQuestionIndex < questions.length - 1) {
@@ -573,6 +588,7 @@
         function restartQuiz() {
             currentQuestionIndex = 0;
             score = 0;
+            shuffleArray(questions);
             resultsContainer.classList.add("hidden");
             quizContainer.classList.remove("hidden");
             loadQuestion();
